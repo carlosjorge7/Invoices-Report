@@ -1,0 +1,77 @@
+<div class="container p-4">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body p-4">
+          <form #facturaForm="ngForm" (ngSubmit)="createFactura(facturaForm)">
+            <input type="hidden" name="_id" #_id="ngModel" [(ngModel)]="facturasService.selectedFactura._id">
+  
+            <div class="form-group">
+              <input type="text" name="fecha" #name="ngModel" [(ngModel)]="facturasService.selectedFactura.fecha"
+                placeholder="Fecha" class="form-control">
+            </div>
+  
+            <div class="form-group">
+              <div class="input-field col-s12">
+                <input type="text" name="hora" #name="ngModel" [(ngModel)]="facturasService.selectedFactura.hora"
+                  placeholder="Hora" class="form-control">
+              </div>
+            </div>
+  
+            <div class="form-group">
+              <input type="text" name="consumo" #name="ngModel" [(ngModel)]="facturasService.selectedFactura.consumo"
+                placeholder="Consumo" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <input type="text" name="precio" #name="ngModel" [(ngModel)]="facturasService.selectedFactura.precio"
+                 placeholder="Precio" class="form-control">
+            </div>
+  
+            <div class="form-group">
+                <input type="text" name="coste" #name="ngModel" [(ngModel)]="facturasService.selectedFactura.coste"
+                   placeholder="Coste" class="form-control">
+            </div>
+  
+            <button class="btn btn-secondary btn-sm" (click)="resetForm(facturaForm)">Limpiar</button>
+            <button class="btn btn-primary btn-sm">Guardar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <!-- TABLE -->
+  <div class="col-md-8">
+    <input type="text" class="form-control" placeholder="Buscar factura ( presiona enter para buscar )" (change)="buscarFactura($event)" /> 
+    <!-- <input type="text" class="form-control" placeholder="Buscar factura ( presiona enter para buscar )" name="hora" (ngModelChange)="buscarFactura($event)" /> -->
+    <table class="table table-striped">
+      <thead>
+        <th>Fecha</th>
+        <th>Hora</th>
+        <th>Consumo</th>
+        <th>Precio</th>
+        <th>Coste</th>
+        <th>Operaciones</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let factura of facturasService.facturas | paginate: { itemsPerPage: 13, currentPage: page } | filtroFacturas: textoBuscar">
+          <td>{{ factura.fecha }}</td>
+          <td>{{ factura.hora }}</td>
+          <td>{{ factura.consumo }}</td>
+          <td>{{ factura.precio }}</td>
+          <td>{{ factura.coste }}</td>
+          <td>
+            <button (click)="updateFactura(factura)" class="btn btn-secondary btn-sm">
+              <i class="fas fa-marker"></i>
+            </button> 
+            <button (click)="deleteFactura(factura._id, facturaForm)" class="btn btn-danger btn-sm">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <pagination-controls style="float: right;" (pageChange)="page = $event"></pagination-controls>
+  </div>
+</div>
+</div>
